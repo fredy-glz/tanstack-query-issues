@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { GithubIssue, State } from "../interfaces";
 import { getIssue, getIssueComments } from "../actions";
+import { timeSince } from "../../helpers";
 
 interface Props {
   issue: GithubIssue;
@@ -34,10 +35,6 @@ export const IssueItem: FC<Props> = ({ issue }) => {
     });
   };
 
-  const msDiferencia =
-    new Date().getTime() - new Date(issue.created_at).getTime();
-  const days = Math.floor(msDiferencia / (1000 * 60 * 60 * 24));
-
   return (
     <div
       // onMouseEnter={prefetchData}
@@ -58,9 +55,21 @@ export const IssueItem: FC<Props> = ({ issue }) => {
           {issue.title}
         </a>
         <span className="text-gray-500">
-          {/* TODO: days ago */}#{issue.number} opened {days} days ago by{" "}
+          {/* TODO: days ago */}#{issue.number} opened{" "}
+          {timeSince(issue.created_at)} days ago by{" "}
           <span className="font-bold">{issue.user.login}</span>
         </span>
+        <div className="flex flex-wrap">
+          {issue.labels.map((label) => (
+            <span
+              key={label.id}
+              className="px-2 mr-2 py-1 text-xs text-white rounded-md"
+              style={{ border: `1px solid #${label.color}` }}
+            >
+              {label.name}
+            </span>
+          ))}
+        </div>
       </div>
 
       <img

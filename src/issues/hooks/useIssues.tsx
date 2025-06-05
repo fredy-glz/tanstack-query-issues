@@ -4,14 +4,14 @@ import { State } from "../interfaces";
 
 interface Props {
   state: State;
+  selectedLabels: string[];
 }
 
-export const useIssues = ({ state }: Props) => {
-  console.log({ state });
+export const useIssues = ({ state, selectedLabels }: Props) => {
   const issuesQuery = useQuery({
-    queryKey: ["issues", state],
-    queryFn: () => getIssues(state),
-    staleTime: 1000 * 60,
+    queryKey: ["issues", { state, selectedLabels }],
+    queryFn: () => getIssues(state, selectedLabels),
+    staleTime: 1000 * 60, // 1 min
   });
 
   return {
