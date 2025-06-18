@@ -11,7 +11,6 @@ export const useIssuesInfinite = ({ state, selectedLabels }: Props) => {
   const issuesQuery = useInfiniteQuery({
     queryKey: ["issues", "infinite", { state, selectedLabels }],
     queryFn: ({ pageParam, queryKey }) => {
-      console.log({pageParam})
       const [, , args] = queryKey;
       const { state, selectedLabels } = args as Props;
 
